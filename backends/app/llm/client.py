@@ -1,7 +1,11 @@
+import logging
 import os
 from typing import Optional
 
 import httpx
+
+
+_log = logging.getLogger(__name__)
 
 
 class LLMClient:
@@ -20,8 +24,9 @@ class LLMClient:
 			endpoint=os.getenv("LLM_ENDPOINT", "https://api.openai.com/v1/chat/completions"),
 		)
 
-	def generate(self, system_prompt: str, user_prompt: str, timeout: float = 6.0) -> Optional[str]:
+	def generate(self, system_prompt: str, user_prompt: str, timeout: float = 30.0) -> Optional[str]:
 		if not self.api_key:
+			_log.warning("LLM_API_KEY missing; skipping rewrite")
 			return None
 
 		payload = {
@@ -31,7 +36,7 @@ class LLMClient:
 				{"role": "user", "content": user_prompt},
 			],
 			"temperature": 0.2,
-			"max_tokens": 512,
+			"max_tokens": 900,
 		}
 
 		headers = {
@@ -44,11 +49,13 @@ class LLMClient:
 				response = client.post(self.endpoint, json=payload, headers=headers)
 				response.raise_for_status()
 				data = response.json()
-		except httpx.HTTPError:
+		except httpx.HTTPError as exc:
+			_log.warning("LLM call failed", exc_info=exc)
 			return None
 
 		choices = data.get("choices") or []
 		if not choices:
+			_log.warning("LLM returned no choices: %s", data)
 			return None
 
 		message = choices[0].get("message") or {}
