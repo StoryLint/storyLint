@@ -61,6 +61,9 @@ Seeds must:
 If the schema change is not in a migration,
 it does not exist.
 
+## Directory Structure
+
+```text
 db/
 ├─ migrations/
 │  ├─ 001_init.sql
