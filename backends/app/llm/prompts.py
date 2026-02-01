@@ -235,7 +235,5 @@ This is a contract.
 
 def build_active_gwt_user_prompt(raw_text: str) -> str:
 	return (
-		"Transform the following acceptance criteria into concise, active Given/When/Then"
-		" statements. Preserve factual content and map each beat to GWT.\n\n"
 		f"Input:\n{raw_text.strip()}"
 	)

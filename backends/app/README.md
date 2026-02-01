@@ -59,7 +59,7 @@ Extension → App Backend → LLM Provider(s)
 ---
 ## DEV FYI
 - Activate your venv and install the HTTP client: run source venv/bin/activate followed by pip install httpx.
-- Set the API credentials before launching the server: export LLM_API_KEY=<secret>, optionally add LLM_MODEL=gpt-4o-mini and LLM_ENDPOINT=https://api.openai.com/v1/chat/completions if you need overrides.
+- Set the API credentials before launching the server: export LLM_API_KEY=<secret>, optionally add LLM_MODEL=ft:gpt-3.5-turbo-0125:trapadulli::D4VF6yDi and LLM_ENDPOINT=https://api.openai.com/v1/chat/completions if you need overrides.
 (ask repo manger for LLM_API_KEY secret)
 - Restart the FastAPI server so it picks up those vars: uvicorn app.main:app --reload --port 8000.
 - From swagger - Hit /analyze again; the response’s rewrites.gwt array should now include the model-produced Given/When/Then draft.

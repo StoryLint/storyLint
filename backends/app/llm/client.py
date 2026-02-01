@@ -20,7 +20,7 @@ class LLMClient:
 	def from_env(cls) -> "LLMClient":
 		return cls(
 			api_key=os.getenv("LLM_API_KEY"),
-			model=os.getenv("LLM_MODEL", "gpt-4o-mini"),
+			model=os.getenv("LLM_MODEL", "ft:gpt-3.5-turbo-0125:trapadulli::D4VF6yDi"),
 			endpoint=os.getenv("LLM_ENDPOINT", "https://api.openai.com/v1/chat/completions"),
 		)
 
