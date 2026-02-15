@@ -11,14 +11,20 @@
   },
   "action": {
     "default_title": "StoryLint",
-    "default_popup": "popup.html",
     "default_icon": {
       "16": "media/storyLint_icon.png",
       "32": "media/storyLint_icon.png"
     }
   },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "side_panel": {
+    "default_path": "popup.html"
+  },
   "permissions": [
-    "clipboardWrite"
+    "clipboardWrite",
+    "sidePanel"
   ],
   "host_permissions": [
     "http://localhost:8000/*"

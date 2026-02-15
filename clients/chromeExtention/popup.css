@@ -9,7 +9,7 @@ body {
 }
 
 .shell {
-  width: 420px;
+  width: min(420px, 100%);
   padding: 12px;
   box-sizing: border-box;
 }

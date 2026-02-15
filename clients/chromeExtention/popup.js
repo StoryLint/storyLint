@@ -1,8 +1,10 @@
 const ANALYZE_URL = "http://localhost:8000/analyze";
+const POPUP_STATE_KEY = "storyLintPopupState.v1";
 
 const inputText = document.getElementById("inputText");
 const sendBtn = document.getElementById("sendBtn");
 const copyBtn = document.getElementById("copyBtn");
+const clearBtn = document.getElementById("clearBtn");
 const status = document.getElementById("status");
 const outputText = document.getElementById("outputText");
 const errorBox = document.getElementById("errorBox");
@@ -17,10 +19,12 @@ function setError(message) {
   if (!message) {
     errorBox.textContent = "";
     errorBox.classList.add("hidden");
+    persistState();
     return;
   }
   errorBox.textContent = message;
   errorBox.classList.remove("hidden");
+  persistState();
 }
 
 function escapeHtml(text) {
@@ -50,6 +54,64 @@ function setOutput(text) {
   const rawText = text || "";
   outputText.innerHTML = renderInlineBold(rawText);
   copyBtn.disabled = !text;
+  persistState();
+}
+
+function persistState() {
+  const state = {
+    input: inputText.value || "",
+    output: outputText.textContent || "",
+    error: errorBox.classList.contains("hidden") ? "" : errorBox.textContent || ""
+  };
+
+  try {
+    localStorage.setItem(POPUP_STATE_KEY, JSON.stringify(state));
+  } catch {
+  }
+}
+
+function restoreState() {
+  try {
+    const serialized = localStorage.getItem(POPUP_STATE_KEY);
+    if (!serialized) {
+      return;
+    }
+
+    const state = JSON.parse(serialized);
+    if (typeof state.input === "string") {
+      inputText.value = state.input;
+    }
+
+    if (typeof state.output === "string" && state.output) {
+      setOutput(state.output);
+    } else {
+      setOutput("");
+    }
+
+    if (typeof state.error === "string" && state.error) {
+      setError(state.error);
+    } else {
+      setError("");
+    }
+  } catch {
+    setOutput("");
+    setError("");
+  }
+}
+
+function clearAll() {
+  inputText.value = "";
+  setOutput("");
+  setError("");
+  sendBtn.disabled = true;
+  status.classList.add("hidden");
+  inputText.disabled = false;
+  copyBtn.textContent = "Copy Text";
+
+  try {
+    localStorage.removeItem(POPUP_STATE_KEY);
+  } catch {
+  }
 }
 
 function sanitizeInput(rawText) {
@@ -182,7 +244,20 @@ async function handleCopy() {
   }
 
   try {
-    await navigator.clipboard.writeText(text);
+    if (window.ClipboardItem && navigator.clipboard?.write) {
+      const htmlContent = outputText.innerHTML.replace(/\n/g, "<br>");
+      const htmlDocument = `<!doctype html><html><head><meta charset="utf-8"></head><body>${htmlContent}</body></html>`;
+
+      const item = new ClipboardItem({
+        "text/plain": new Blob([text], { type: "text/plain" }),
+        "text/html": new Blob([htmlDocument], { type: "text/html" })
+      });
+
+      await navigator.clipboard.write([item]);
+    } else {
+      await navigator.clipboard.writeText(text);
+    }
+
     copyBtn.textContent = "Copied";
     setTimeout(() => {
       copyBtn.textContent = "Copy Text";
@@ -194,11 +269,14 @@ async function handleCopy() {
 
 inputText.addEventListener("input", () => {
   sendBtn.disabled = !inputText.value.trim();
+  persistState();
 });
 
 sendBtn.addEventListener("click", handleSend);
 copyBtn.addEventListener("click", handleCopy);
+clearBtn.addEventListener("click", clearAll);
 
-sendBtn.disabled = true;
-setOutput("");
-setError("");
+restoreState();
+sendBtn.disabled = !inputText.value.trim();
+status.classList.add("hidden");
+inputText.disabled = false;
