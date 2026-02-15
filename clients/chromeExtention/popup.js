@@ -23,8 +23,32 @@ function setError(message) {
   errorBox.classList.remove("hidden");
 }
 
+function escapeHtml(text) {
+  return text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/\"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+function renderInlineBold(text) {
+  const escaped = escapeHtml(text);
+  return escaped
+    .replace(/\*\*([^*\n][^\n]*?)\*\*/g, "<strong>$1</strong>")
+    .replace(/__([^_\n][^\n]*?)__/g, "<strong>$1</strong>")
+    .replace(/(?<!\*)\*([^*\n][^\n]*?)\*(?!\*)/g, "<em>$1</em>")
+    .replace(/(?<!_)_([^_\n][^\n]*?)_(?!_)/g, "<em>$1</em>")
+    .replace(/(^|\s)\*\*(?=\s|$)/gm, "$1")
+    .replace(/(^|\n)(\s*)(given|when|then):/gi, (match, lineStart, indent, keyword) => {
+      const titleKeyword = `${keyword.charAt(0).toUpperCase()}${keyword.slice(1).toLowerCase()}`;
+      return `${lineStart}${indent}<strong>${titleKeyword}:</strong>`;
+    });
+}
+
 function setOutput(text) {
-  outputText.textContent = text || "";
+  const rawText = text || "";
+  outputText.innerHTML = renderInlineBold(rawText);
   copyBtn.disabled = !text;
 }
 
@@ -43,9 +67,61 @@ function sanitizeInput(rawText) {
     .trim();
 }
 
+function normalizeWhitespace(text) {
+  return text
+    .replace(/\r\n/g, "\n")
+    .replace(/\\n/g, "\n")
+    .replace(/\\t/g, "  ")
+    .split("\n")
+    .map((line) => line.replace(/\s+$/g, ""))
+    .join("\n")
+    .trim();
+}
+
+function stripFormattingChars(text) {
+  return text
+    .replace(/^\s{0,3}#{1,6}\s+/gm, "")
+    .replace(/`([^`]+)`/g, "$1")
+    .replace(/^\s*[*•]\s+/gm, "- ")
+    .replace(/^\s*\d+\.\s+/gm, "- ");
+}
+
+function beautifyGwtText(rawText) {
+  if (typeof rawText !== "string") {
+    return "";
+  }
+
+  const cleaned = stripFormattingChars(normalizeWhitespace(rawText));
+
+  return cleaned
+    .replace(/(^|\s)\*\*(?=\s|$)/gm, "$1")
+    .replace(/(^|\s)__(?=\s|$)/gm, "$1")
+    .replace(/:\s*\*\*(?=\s|$)/g, ": ")
+    .replace(/:\s*__(?=\s|$)/g, ": ")
+    .replace(/\b(given)\b\s*:?/gi, "Given: ")
+    .replace(/\b(when)\b\s*:?/gi, "\nWhen: ")
+    .replace(/\b(then)\b\s*:?/gi, "\nThen: ")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim();
+}
+
+function formatIssue(issue, index) {
+  const code = issue?.code ?? "UNKNOWN";
+  const message = issue?.message ?? "No details";
+  const severity = issue?.severity ? ` (${issue.severity})` : "";
+  return `- ${index + 1}. ${code}${severity}: ${message}`;
+}
+
 function formatResponse(report) {
   if (Array.isArray(report?.rewrites?.gwt) && report.rewrites.gwt.length > 0) {
-    return report.rewrites.gwt.join("\n\n");
+    const formattedGwt = report.rewrites.gwt
+      .map((item) => beautifyGwtText(String(item ?? "")))
+      .filter(Boolean)
+      .join("\n\n");
+
+    if (formattedGwt) {
+      return formattedGwt;
+    }
   }
 
   const pattern = report?.pattern ? `Pattern: ${report.pattern}` : "Pattern: Unknown";
@@ -53,12 +129,10 @@ function formatResponse(report) {
   const issues = Array.isArray(report?.issues) ? report.issues : [];
 
   if (issues.length === 0) {
-    return `${score}\n${pattern}\n\nNo rewrite returned.`;
+    return `${score}\n${pattern}\n\nNo rewrite returned by API.`;
   }
 
-  const issueLines = issues
-    .map((issue, index) => `${index + 1}. ${issue.code ?? "UNKNOWN"}: ${issue.message ?? "No details"}`)
-    .join("\n");
+  const issueLines = issues.map(formatIssue).join("\n");
 
   return `${score}\n${pattern}\n\nIssues:\n${issueLines}`;
 }

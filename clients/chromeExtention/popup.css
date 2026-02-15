@@ -122,6 +122,10 @@ body {
   white-space: pre-wrap;
 }
 
+.output strong {
+  font-weight: 700;
+}
+
 .hidden {
   display: none;
 }
