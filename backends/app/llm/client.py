@@ -11,22 +11,30 @@ _log = logging.getLogger(__name__)
 class LLMClient:
 	"""Minimal wrapper for a fast completion API."""
 
-	def __init__(self, api_key: Optional[str], model: str, endpoint: str):
+	def __init__(self, api_key: Optional[str], model: Optional[str], endpoint: Optional[str]):
 		self.api_key = api_key
 		self.model = model
-		self.endpoint = endpoint.rstrip("/")
+		self.endpoint = endpoint.rstrip("/") if endpoint else None
 
 	@classmethod
 	def from_env(cls) -> "LLMClient":
 		return cls(
 			api_key=os.getenv("LLM_API_KEY"),
-			model=os.getenv("LLM_MODEL", "ft:gpt-3.5-turbo-0125:trapadulli::D4VF6yDi"),
-			endpoint=os.getenv("LLM_ENDPOINT", "https://api.openai.com/v1/chat/completions"),
+			model=os.getenv("LLM_MODEL"),
+			endpoint=os.getenv("LLM_ENDPOINT"),
 		)
 
 	def generate(self, system_prompt: str, user_prompt: str, timeout: float = 30.0) -> Optional[str]:
 		if not self.api_key:
 			_log.warning("LLM_API_KEY missing; skipping rewrite")
+			return None
+
+		if not self.model:
+			_log.warning("LLM_MODEL missing; skipping rewrite")
+			return None
+
+		if not self.endpoint:
+			_log.warning("LLM_ENDPOINT missing; skipping rewrite")
 			return None
 
 		payload = {

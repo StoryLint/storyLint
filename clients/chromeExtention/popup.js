@@ -28,6 +28,21 @@ function setOutput(text) {
   copyBtn.disabled = !text;
 }
 
+function sanitizeInput(rawText) {
+  if (typeof rawText !== "string") {
+    return "";
+  }
+
+  return rawText
+    .normalize("NFKC")
+    .replace(/\r\n?/g, "\n")
+    .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g, " ")
+    .replace(/[\u2028\u2029]/g, "\n")
+    .replace(/[ \t]+\n/g, "\n")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim();
+}
+
 function formatResponse(report) {
   if (Array.isArray(report?.rewrites?.gwt) && report.rewrites.gwt.length > 0) {
     return report.rewrites.gwt.join("\n\n");
@@ -49,11 +64,13 @@ function formatResponse(report) {
 }
 
 async function handleSend() {
-  const text = inputText.value.trim();
+  const text = sanitizeInput(inputText.value);
   if (!text) {
     setError("Enter requirement text before sending.");
     return;
   }
+
+  inputText.value = text;
 
   setError("");
   setLoading(true);
