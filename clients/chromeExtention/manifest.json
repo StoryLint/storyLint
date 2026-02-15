@@ -1,0 +1,16 @@
+{
+  "manifest_version": 3,
+  "name": "StoryLint",
+  "description": "Convert requirement text into Given/When/Then acceptance criteria.",
+  "version": "0.1.0",
+  "action": {
+    "default_title": "StoryLint",
+    "default_popup": "popup.html"
+  },
+  "permissions": [
+    "clipboardWrite"
+  ],
+  "host_permissions": [
+    "http://localhost:8000/*"
+  ]
+}

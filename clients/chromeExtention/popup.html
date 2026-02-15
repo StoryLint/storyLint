@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>StoryLint</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <header class="header">
+        <div class="pill">StoryLint · Gen 1</div>
+      </header>
+
+      <section class="section">
+        <label for="inputText" class="label">Requirement Text</label>
+        <textarea
+          id="inputText"
+          class="textarea"
+          rows="7"
+          placeholder="Paste requirement text..."
+        ></textarea>
+      </section>
+
+      <section class="actions">
+        <button id="sendBtn" class="btn btn-primary" type="button">Send</button>
+      </section>
+
+      <section id="status" class="status hidden" aria-live="polite">
+        <span class="spinner" aria-hidden="true"></span>
+        <span>Generating GWT...</span>
+      </section>
+
+      <section id="errorBox" class="error hidden" aria-live="polite"></section>
+
+      <section class="section">
+        <label for="outputText" class="label">Output</label>
+        <pre id="outputText" class="output" aria-live="polite"></pre>
+      </section>
+
+      <section class="actions">
+        <button id="copyBtn" class="btn" type="button" disabled>Copy Text</button>
+      </section>
+    </main>
+
+    <script src="popup.js" type="module"></script>
+  </body>
+</html>
