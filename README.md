@@ -42,8 +42,8 @@ StoryLint enforces clarity. One behavior. One outcome. Testable.
 
 <table>
 	<tr>
-		<td><img src="images/extension.png" alt="Extension Example" width="360"/></td>
-		<td><img src="images/sidebar.png" alt="Sidebar Example" width="360"/></td>
+		<td><img src="images/extension.png" alt="Extension Example" width="400"/></td>
+		<td><img src="images/sidebar.png" alt="Sidebar Example" width="400"/></td>
 	</tr>
 </table>
 
