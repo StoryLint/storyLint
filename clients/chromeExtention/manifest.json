@@ -1,0 +1,32 @@
+{
+  "manifest_version": 3,
+  "name": "StoryLint",
+  "description": "Convert requirement text into Given/When/Then acceptance criteria.",
+  "version": "0.1.0",
+  "icons": {
+    "16": "media/storyLint_icon.png",
+    "32": "media/storyLint_icon.png",
+    "48": "media/storyLint_icon.png",
+    "128": "media/storyLint_icon.png"
+  },
+  "action": {
+    "default_title": "StoryLint",
+    "default_icon": {
+      "16": "media/storyLint_icon.png",
+      "32": "media/storyLint_icon.png"
+    }
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "side_panel": {
+    "default_path": "popup.html"
+  },
+  "permissions": [
+    "clipboardWrite",
+    "sidePanel"
+  ],
+  "host_permissions": [
+    "http://localhost:8000/*"
+  ]
+}
