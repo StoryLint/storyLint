@@ -66,52 +66,52 @@ So that I can onboard new accounts without delays
 
 **Acceptance Criteria**
 
-**Scenario**: Default tab selection honors user history and overrides
-**Given**:  the operations analyst opens the Account Onboarding Requests experience
-**When**:  the tabs render
-**Then**:  the Active tab displays by default
+	**Scenario**: Default tab selection honors user history and overrides
+	**Given**: the operations analyst opens the Account Onboarding Requests experience
+	**When**: the tabs render
+	**Then**: the Active tab displays by default
 
-**Scenario**: Custom tab selection persists across sessions
-**Given**:  the operations analyst selects the Completed tab
-**When**:  the session ends and restarts
-**Then**:  the Completed tab restores as the default
+	**Scenario**: Custom tab selection persists across sessions
+	**Given**: the operations analyst selects the Completed tab
+	**When**: the session ends and restarts
+	**Then**: the Completed tab restores as the default
 
-**Scenario**: Tab defaults respect overrides and conditions
-**Given**:  the feature flag X9 is off
-**When**:  the Account Onboarding Requests experience initializes
-**Then**:  the Active tab renders as the default
+	**Scenario**: Tab defaults respect overrides and conditions
+	**Given**: the feature flag X9 is off
+	**When**: the Account Onboarding Requests experience initializes
+	**Then**: the Active tab renders as the default
 
-**Scenario**: Configurable title displays based on environment
-**Given**:  the operations analyst opens the Account Onboarding Requests experience
-**When**:  the title component renders
-**Then**:  the title displays "Onboarding Request List"
+	**Scenario**: Configurable title displays based on environment
+	**Given**: the operations analyst opens the Account Onboarding Requests experience
+	**When**: the title component renders
+	**Then**: the title displays "Onboarding Request List"
 
-**Scenario**: Global search queries multiple fields with scoping
-**Given**:  the operations analyst enters a search term
-**When**:  the search executes
-**Then**:  the results include matching ID, Portfolio Name, and Submitted By values
+	**Scenario**: Global search queries multiple fields with scoping
+	**Given**: the operations analyst enters a search term
+	**When**: the search executes
+	**Then**: the results include matching ID, Portfolio Name, and Submitted By values
 
-**Scenario**: Search hint appears 
-**Given**:  the search field is empty
-**When**:  the Account Onboarding Requests experience renders
-**Then**:  the search hint "Search by ID, Portfolio Name, or Submitted By" displays
+	**Scenario**: Search hint appears
+	**Given**: the search field is empty
+	**When**: the Account Onboarding Requests experience renders
+	**Then**: the search hint "Search by ID, Portfolio Name, or Submitted By" displays
 
-**Scenario**: Search debounce prevents rapid queries
-**Given**:  the operations analyst enters a search term
-**When**:  the debounce interval elapses
-**Then**:  the search query executes
+	**Scenario**: Search debounce prevents rapid queries
+	**Given**: the operations analyst enters a search term
+	**When**: the debounce interval elapses
+	**Then**: the search query executes
 
-**Scenario**: Completion Date dropdown defaults on Completed tab
-**Given**:  the operations analyst is viewing the Completed tab
-**When**:  the Completion Date dropdown renders
-**Then**:  the Last 7 Days range defaults
+	**Scenario**: Completion Date dropdown defaults on Completed tab
+	**Given**: the operations analyst is viewing the Completed tab
+	**When**: the Completion Date dropdown renders
+	**Then**: the Last 7 Days range defaults
 
-**Scenario**: Completion Date dropdown selection updates results
-**Given**:  the operations analyst opens the Completion Date dropdown
-**When**:  the operations analyst selects a date range
-**Then**:  the onboarding request results refresh with the selected range
+	**Scenario**: Completion Date dropdown selection updates results
+	**Given**: the operations analyst opens the Completion Date dropdown
+	**When**: the operations analyst selects a date range
+	**Then**: the onboarding request results refresh with the selected range
 
-**Scenario**: Reset clears all filters and state
-**Given**:  the operations analyst has applied filters and search terms
-**When**:  the operations analyst clicks Reset
-**Then**:  the tabs, search field, date range, and sorting reset to default state
+	**Scenario**: Reset clears all filters and state
+	**Given**: the operations analyst has applied filters and search terms
+	**When**: the operations analyst clicks Reset
+	**Then**: the tabs, search field, date range, and sorting reset to default state
