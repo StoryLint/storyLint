@@ -8,14 +8,6 @@ Paste messy stories. Get clean acceptance criteria. No fluff. No opinions.
 
 ---
 
-## AI/Dev Assistant Start Here
-
-- Read [AGENTS.md](AGENTS.md) first
-- Use prompts in [LLM_PROMPTS/README.md](LLM_PROMPTS/README.md)
-- Default bootstrap prompt: [LLM_PROMPTS/SESSION_BOOTSTRAP.md](LLM_PROMPTS/SESSION_BOOTSTRAP.md)
-
----
-
 ## Why StoryLint exists
 
 Most agile stories fail for the same reasons:
