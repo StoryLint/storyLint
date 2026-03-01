@@ -11,7 +11,17 @@ if (typeof module !== 'undefined' && module.exports) {
     formatResponse
   };
 }
-const ANALYZE_URL = "http://localhost:8000/analyze";
+// Import ANALYZE_URL from app.settings.js
+let ANALYZE_URL;
+if (typeof require !== 'undefined') {
+  try {
+    ANALYZE_URL = require('./app.settings.js').ANALYZE_URL;
+  } catch {
+    ANALYZE_URL = "http://localhost:8000/analyze";
+  }
+} else {
+  ANALYZE_URL = "http://localhost:8000/analyze";
+}
 const POPUP_STATE_KEY = "storyLintPopupState.v1";
 
 const inputText = document.getElementById("inputText");
