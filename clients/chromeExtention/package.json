@@ -1,0 +1,15 @@
+{
+  "name": "chrome-extension-tests",
+  "version": "1.0.0",
+  "description": "Unit tests for Chrome extension using Jest.",
+  "scripts": {
+    "test": "jest",
+    "test:coverage": "jest --coverage"
+  },
+  "devDependencies": {
+    "jest": "^29.0.0"
+  },
+  "dependencies": {
+    "jest-environment-jsdom": "^30.2.0"
+  }
+}
