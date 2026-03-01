@@ -1,3 +1,16 @@
+// Export functions for Jest unit testing and coverage
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = {
+    escapeHtml,
+    renderInlineBold,
+    sanitizeInput,
+    normalizeWhitespace,
+    stripFormattingChars,
+    beautifyGwtText,
+    formatIssue,
+    formatResponse
+  };
+}
 const ANALYZE_URL = "http://localhost:8000/analyze";
 const POPUP_STATE_KEY = "storyLintPopupState.v1";
 
