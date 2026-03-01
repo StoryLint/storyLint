@@ -1,3 +1,4 @@
+clients/chromeExtention/app.settings.js
 .env
 .env.*
 !.env.example
