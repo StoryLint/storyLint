@@ -5,7 +5,8 @@
   "scripts": {
     "test:chromeExtention": "cd clients/chromeExtention && npm test",
     "test:chromeExtentionTests": "npx jest --config clients/chromeExtention/jest.config.js",
-    "test": "npm run test:chromeExtentionTests"
+    "test:chromeExtentionTests:coverage": "npx jest clients/chromeExtention-tests --coverage --config clients/chromeExtention/jest.config.js",
+    "test": "npm run test:chromeExtentionTests:coverage"
   },
   "devDependencies": {
     "@testing-library/dom": "^10.4.1",

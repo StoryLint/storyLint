@@ -12,3 +12,5 @@ backends/venv/
 node_modules
 
 chromeExtention/coverage/
+
+coverage/
