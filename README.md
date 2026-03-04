@@ -1,6 +1,6 @@
 # StoryLint
 
-Linting for product requirements.
+Linting for product requirements with assistance from LLMs.
 
 StoryLint is a Chrome extension that converts narrative, ambiguous product requirements into deterministic, testable **Given / When / Then** specifications.
 
